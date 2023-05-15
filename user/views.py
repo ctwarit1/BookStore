@@ -6,9 +6,6 @@ from user.utils import encode
 
 
 # Create your views here.
-def first_func(request):
-    return Response({"message": "Hello World"})
-
 
 class UserReg(APIView):
 
