@@ -2,6 +2,7 @@ from rest_framework import status, viewsets
 from rest_framework.response import Response
 from book.models import Book
 from book.serializers import BookSerializer
+from user.utils import authenticate_user, verify_superuser, verify_user
 
 """
 create ---> create data
@@ -15,8 +16,10 @@ retrieve ---> retrieve data by id
 # Create your views here.
 class Books(viewsets.ViewSet):
 
+    @verify_superuser
     def create(self, request):
         """Create a Book"""
+
         try:
             serializer = BookSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -27,6 +30,7 @@ class Books(viewsets.ViewSet):
         except Exception as e:
             return Response({"message": str(e), "status": 400}, status=status.HTTP_400_BAD_REQUEST)
 
+    @verify_user
     def list(self, request):
         """Get all Books"""
         try:
@@ -38,6 +42,7 @@ class Books(viewsets.ViewSet):
         except Exception as e:
             return Response({"message": str(e), "status": 400}, status=status.HTTP_400_BAD_REQUEST)
 
+    @verify_user
     def retrieve(self, request, pk):
         """Retrieve a Book by id"""
         try:
@@ -49,6 +54,7 @@ class Books(viewsets.ViewSet):
         except Exception as e:
             return Response({"message": str(e), "status": 400}, status=status.HTTP_400_BAD_REQUEST)
 
+    @verify_superuser
     def update(self, request, pk):
         """Updating a Book"""
         try:
@@ -62,6 +68,7 @@ class Books(viewsets.ViewSet):
         except Exception as e:
             return Response({"message": str(e), "status": 400}, status=status.HTTP_400_BAD_REQUEST)
 
+    @verify_superuser
     def destroy(self, request, pk):
         """Deleting a Book"""
         try:

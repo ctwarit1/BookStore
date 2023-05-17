@@ -4,6 +4,7 @@ from book.views import Books
 
 # creating router object
 router = DefaultRouter()
+
 # register Books view wit router
 router.register('books', Books, basename='book')
 
