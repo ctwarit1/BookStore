@@ -43,3 +43,40 @@ class ItemsCart(viewsets.ViewSet):
                             status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"message": str(e), "status": 400}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class OrderAPI(viewsets.ViewSet):
+    @verify_user
+    def create(self, request):
+        try:
+            cart = Cart.objects.get(id=request.data.get("cart"), user_id=request.data.get("user"))
+            print(cart)
+            cart.status = True
+            cart.save()
+
+            return Response({"message": "Active Cart", "status": 201},
+                            status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"message": str(e), "status": 400}, status=status.HTTP_400_BAD_REQUEST)
+
+    @verify_user
+    def list(self, request):
+        try:
+            cart = Cart.objects.filter(user_id=request.data.get("user"), status=True)
+            serializer = CartSerializers(cart, many=True)
+
+            return Response({"message": "Active Cart Fetched", "status": 201, "data": serializer.data},
+                            status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"message": str(e), "status": 400}, status=status.HTTP_400_BAD_REQUEST)
+
+    @verify_user
+    def destroy(self, request, pk):
+        try:
+            cart = Cart.objects.get(user_id=request.data.get("user"), pk=pk, status=True)
+            cart.delete()
+
+            return Response({"message": "Active Cart Deleted", "status": 201, "data": {}},
+                            status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"message": str(e), "status": 400}, status=status.HTTP_400_BAD_REQUEST)
