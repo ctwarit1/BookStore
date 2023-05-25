@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'book',
     'cart',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

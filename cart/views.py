@@ -50,7 +50,6 @@ class OrderAPI(viewsets.ViewSet):
     def create(self, request):
         try:
             cart = Cart.objects.get(id=request.data.get("cart"), user_id=request.data.get("user"))
-            print(cart)
             cart.status = True
             cart.save()
 
@@ -73,7 +72,7 @@ class OrderAPI(viewsets.ViewSet):
     @verify_user
     def destroy(self, request, pk):
         try:
-            cart = Cart.objects.get(user_id=request.data.get("user"), pk=pk, status=True)
+            cart = Cart.objects.get(user_id=request.data.get("user"), pk=pk)
             cart.delete()
 
             return Response({"message": "Active Cart Deleted", "status": 201, "data": {}},
