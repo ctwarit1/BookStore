@@ -4,11 +4,14 @@ from rest_framework import status
 from cart.serializers import CartSerializers
 from user.utils import verify_user
 from cart.models import Cart
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 # Create your views here.
 class ItemsCart(viewsets.ViewSet):
 
+    @swagger_auto_schema(request_body=CartSerializers)
     @verify_user
     def create(self, request):
         """Creating a Cart"""
@@ -46,6 +49,11 @@ class ItemsCart(viewsets.ViewSet):
 
 
 class OrderAPI(viewsets.ViewSet):
+    @swagger_auto_schema(request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'cart': openapi.Schema(type=openapi.TYPE_INTEGER),
+        }))
     @verify_user
     def create(self, request):
         try:

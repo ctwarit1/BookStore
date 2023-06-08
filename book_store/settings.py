@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'book',
     'cart',
     'django_extensions',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -133,9 +134,31 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+# smtp settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
+
+BASE_URL = 'http://127.0.0.1:8000'
 
 # jwt setting
 SECRET = os.environ.get("SECRET")
 ALGORITHMS = os.environ.get("ALGORITHMS")
+
+# swagger settings
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'token',
+            'in': 'header'
+        }
+    }
+}

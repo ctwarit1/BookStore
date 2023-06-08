@@ -5,4 +5,4 @@ from django.db import models
 # Create your models here.
 class User(AbstractUser):
     phone = models.BigIntegerField(null=True)
-
+    is_verified = models.BooleanField(default=False)

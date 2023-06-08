@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from book.models import Book
 from book.serializers import BookSerializer
 from user.utils import authenticate_user, verify_superuser, verify_user
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 """
 create ---> create data
@@ -16,6 +18,7 @@ retrieve ---> retrieve data by id
 # Create your views here.
 class Books(viewsets.ViewSet):
 
+    @swagger_auto_schema(request_body=BookSerializer)
     @verify_superuser
     def create(self, request):
         """Create a Book"""
@@ -42,6 +45,7 @@ class Books(viewsets.ViewSet):
         except Exception as e:
             return Response({"message": str(e), "status": 400}, status=status.HTTP_400_BAD_REQUEST)
 
+
     @verify_user
     def retrieve(self, request, pk):
         """Retrieve a Book by id"""
@@ -54,6 +58,14 @@ class Books(viewsets.ViewSet):
         except Exception as e:
             return Response({"message": str(e), "status": 400}, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'title': openapi.Schema(type=openapi.TYPE_STRING),
+            'author': openapi.Schema(type=openapi.TYPE_STRING),
+            'price': openapi.Schema(type=openapi.TYPE_STRING),
+            'quantity': openapi.Schema(type=openapi.TYPE_STRING),
+        }))
     @verify_superuser
     def update(self, request, pk):
         """Updating a Book"""
