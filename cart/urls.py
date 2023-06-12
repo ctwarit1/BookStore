@@ -6,7 +6,7 @@ from cart.views import ItemsCart, OrderAPI
 router = DefaultRouter()
 
 # register Books view wit router
-router.register('carts', ItemsCart, basename='cart')
+router.register('cart', ItemsCart, basename='cart')
 router.register('order', OrderAPI, basename='order')
 
 urlpatterns = [

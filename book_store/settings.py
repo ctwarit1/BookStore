@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'book',
     'cart',
     'django_extensions',
+    # 'django_celery_beat',
     'drf_yasg',
 ]
 
@@ -133,6 +134,19 @@ STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+# celery settings
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+
+# beat
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
 
 # smtp settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
